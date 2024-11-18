@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="merch, oblečení, cena, PRDK">
+    <meta name="author" content="hehe">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+    <link rel="shortcut icon" href="/static/image/prdk.png" />
+    <link rel="stylesheet" href="css/lightbox.min.css" type="text/css" media="screen" />
+    <script src="js/lightbox-plus-jquery.min.js"></script>
+    <script src="js/lightbox.min.js"></script>
+    <title>PRDK Merch</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/"><img src="/static/image/prdk.png" ></a>
+        </div>
+        <div class="navigation">
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/merch">Merch</a></li>
+                    <li><a href="/other">DUB Packs</a></li>
+                    <li><a href="https://www.patreon.com/prdkmusic" target="_blank" rel="noopener noreferrer">Patreon</a></li>
+                    <li class="cart-icon"><a href="/cart"><img src="{{ url_for('static', filename='image/cart.png') }}" alt="cart"></a><span id="cart-count">0</span></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="parent-container">        
+            <div class="content">
+                {% for item in merchandise %}
+                    <li>
+                        <h2>{{ item.title }}</h2>
+                        <img src="{{ url_for('static', filename='image/shirt.jpg') }}" alt="{{ item.title }}" style="width: 200px; height: 250px ">
+                        
+                        {% if item.quantity > 0 %}
+                            <form onsubmit="addToCart(this); return false;">
+                            <!--<input type="hidden" name="itemId" value="{{ item.id }}">
+                                <button type="submit">Add to Cart</button>---> 
+                                <p>SOLD OUT</p>
+                            </form>
+                        {% else %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        function addToCart(form) {
+            var itemName = form.querySelector('[name="itemName"]').value;
+            var itemPrice = form.querySelector('[name="itemPrice"]').value;
+
+            $.ajax({
+                type: 'POST',
+                url: '/add_to_cart',
+                data: { itemName: itemName, itemPrice: itemPrice },
+                success: function(response) {
+                    if (response.success) {
+                        alert('Item added to cart successfully!');
+                        updateCartCount(); // Aktualizovat počet položek v košíku v navigačním menu
+                    } else {
+                        alert('Failed to add item to cart.');
+                    }
+                },
+                error: function() {
+                    alert('Error occurred while adding item to cart.');
+                }
+            });
+        }
+
+        function updateCartCount() {
+        $.ajax({
+            type: 'GET',
+            url: '/get_cart_count',
+            success: function(response) {
+                $('#cart-count').text(response.count); // Použijeme response.count
+            },
+            error: function() {
+                alert('Chyba při aktualizaci počtu položek v košíku.');
+            }
+        });
+    }
+    
+        function updateQuantity(itemId, quantity) {
+        $.ajax({
+            type: 'POST',
+            url: '/update_cart_item_quantity',
+            data: { itemId: itemId, quantity: quantity },
+            success: function(response) {
+                if (response.success) {
+                    updateCartCount(); // Aktualizace počtu položek v košíku
+                    location.reload();
+                } else {
+                    alert('Nepodařilo se aktualizovat množství položky.');
+                }
+            },
+            error: function() {
+                alert('Chyba při aktualizaci množství položky.');
+            }
+        });
+    }
+    
+        // Volání funkce updateCartCount() při načtení stránky pro zobrazení aktuálního počtu položek v košíku
+        $(document).ready(function() {
+            updateCartCount();
+        });
+    </script>
+
+    <footer>
+        <div class="footer">Created by &copy; hehe</div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PRDK Music - Online store for DUB packs and music merchandise.">
+    <meta name="keywords" content="hudba, skladba, cena, PRDK, DUB packs">
+    <meta name="author" content="hehe">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/prdk.png') }}">
+    <link rel="stylesheet" href="css/lightbox.min.css" type="text/css" media="screen" />
+    <script src="js/lightbox-plus-jquery.min.js"></script>
+    <script src="js/lightbox.min.js"></script>
+    <title>PRDK Music</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/"><img src="{{ url_for('static', filename='image/prdk.png') }}" alt="PRDK Music"></a>
+        </div>
+        <div class="navigation">
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/merch">Merch</a></li>
+                    <li><a href="/other">DUB Packs</a></li>
+                    <li><a href="https://www.patreon.com/prdkmusic" target="_blank" rel="noopener noreferrer">Patreon</a></li>
+                    <li class="cart-icon"><a href="/cart"><img src="{{ url_for('static', filename='image/cart.png') }}" alt="košík"></a><span id="cart-count">0</span></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="parent-container">        
+            <div class="content">
+                <ul>
+                    {% for dub in DUBs %}
+                        <h2>{{ dub.title }} </h2> 
+                        <li>
+                            <img src="/static/image/dub.jpg" alt="{{ dub.title }}" style="width: 250px;">
+                        </li>
+                        <li>
+                            {{ 2599 }} Kč
+                            <form onsubmit="addToCart(event, '{{ dub.id }}', '{{ dub.title }}', '{{ dub.price }}')">
+                                <input type="hidden" name="itemId" value="{{ dub.id }}">
+                                <button type="submit">Add to cart</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function addToCart(event, itemId, title, price) {
+        event.preventDefault();
+        console.log('Adding to cart: ', itemId, title, price); // Pro ladění
+        alert('Adding to cart: ' + itemId + ', ' + title + ', ' + price); // Pro ladění
+        $.ajax({
+            type: 'POST',
+            url: '/add_to_cart',
+            data: { itemId: itemId },
+            success: function(response) {
+                if (response.success) {
+                    alert('Položka byla úspěšně přidána do košíku!');
+                    updateCartCount();
+                } else {
+                    alert('Nepodařilo se přidat položku do košíku.');
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Došlo k chybě při přidávání položky do košíku: ' + xhr.responseText);
+                console.log('Chyba:', status, error);
+                console.log('Odpověď serveru:', xhr.responseText);
+            }
+        });
+    }
+
+    function updateCartCount() {
+        $.ajax({
+            type: 'GET',
+            url: '/get_cart_count',
+            success: function(response) {
+                $('#cart-count').text(response.count); // Použijeme response.count
+            },
+            error: function() {
+                alert('Chyba při aktualizaci počtu položek v košíku.');
+            }
+        });
+    }
+
+    function updateQuantity(itemId, quantity) {
+        $.ajax({
+            type: 'POST',
+            url: '/update_cart_item_quantity',
+            data: { itemId: itemId, quantity: quantity },
+            success: function(response) {
+                if (response.success) {
+                    updateCartCount(); // Aktualizace počtu položek v košíku
+                    location.reload();
+                } else {
+                    alert('Nepodařilo se aktualizovat množství položky.');
+                }
+            },
+            error: function() {
+                alert('Chyba při aktualizaci množství položky.');
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        updateCartCount();
+    });
+</script>
+
+</body>
+</html>

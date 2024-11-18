@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Přihlášení</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/"><img src="/static/image/prdk.png"></a>
+        </div>
+        <div class="navigation">
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/merch">Merch</a></li>
+                    <li><a href="/other">DUB Packs</a></li>
+                    <li><a href="https://www.patreon.com/prdkmusic" target="_blank" rel="noopener noreferrer">Patreon</a></li>
+                    <li class="cart-icon"><a href="/cart"><img src="{{ url_for('static', filename='image/cart.png') }}" alt="cart"></a><span id="cart-count">0</span></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <h2>Přihlášení</h2>
+        <form action="/login" method="post">
+            <label for="username">Uživatelské jméno:</label>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Heslo:</label>
+            <input type="password" id="password" name="password" required><br>
+            <button type="submit">Přihlásit</button>
+        </form>
+    </main>
+
+    <footer>
+        <div class="footer">Created by &copy; hehe</div>
+    </footer>
+</body>
+</html>

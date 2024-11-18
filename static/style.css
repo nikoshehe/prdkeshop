@@ -1,0 +1,495 @@
+/* Reset a základní styly */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  background-image: url(image/background.jpg);
+  background-size: cover;
+  background-color: #414042;
+  line-height: 1.5;
+  
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Styly pro header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  background-color: #262626;
+  padding: 0 20px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  background-color: #262626;
+  padding: 20px;
+}
+
+.footer p {
+  color: #fff;
+  margin: 0;
+  text-align: center;
+}
+
+nav {
+  
+  padding: 10px;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+nav ul li {
+  margin: 0 10px;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.navigation ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.logo img {
+  width: 100px;
+  height: auto;
+  margin: 10px;
+}
+
+li {
+  list-style-type: none;
+}
+
+.navigation ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navigation ul li {
+  display: inline;
+  margin-right: 20px;
+  transition: color 0.3s, transform 0.3s; /* Přechod pro hladký efekt hover */
+}
+
+.navigation ul li a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.navigation ul li a:hover {
+  opacity: 0.7;
+  transform: scale(1.1);
+}
+
+/* Styly pro main */
+main {
+  margin-top: 50px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0;
+  box-sizing: border-box;
+
+}
+
+
+.track, .item, .sample {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+#shop-list {
+  border: 1px solid black;
+  max-width: auto; /* Upravena maximální šířka */
+  height: 500px;
+  color: black;
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.75); /* Oprava hodnoty opacity */
+  background-size: cover; /* Oprava vlastnosti */
+  overflow: hidden;
+  list-style: none; /* Přesunuto sem, sjednocení */
+  padding: 0; /* Přesunuto sem, sjednocení */
+  background-color: #262626; /* Úprava barvy pozadí */
+  border: 1px solid #555; /* Oprava barvy rámečku */
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.parent-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 50%; /* Nastaví šířku na 90% obrazovky */
+  max-width: 100%;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.75);
+  background-color: #262626;
+  border: 1px solid #555;
+  border-radius: 5px;
+  margin-top: 30px;
+  margin-bottom: 10px; 
+  padding: 10px; 
+  box-sizing: border-box;
+}
+
+.soc {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+  color: black;
+  background-size: cover;
+  overflow: hidden;
+  align-content: space-between 10px;
+  max-width: 100%;
+}
+
+.soc ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.soc img {
+  width: 50px;
+  height: 50px;
+  margin: 0 5px;
+  transition: transform 0.3s, opacity 0.3s; /* Přechod pro hladký efekt hover */
+
+}
+
+.soc img:hover {
+  transform: scale(1.2); /* Zvětší ikonu na hover */
+  opacity: 0.7; /* Změní průhlednost ikony na hover */
+}
+
+.video {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.item {
+  width: 250px;
+}
+
+.item img, .sample img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.item p, .sample p {
+  color: #fff;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1db954;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto;
+}
+
+button:hover {
+  background-color: #0f813f;
+}
+
+img {
+  width: 225px;
+  height: 225px;
+}
+
+/* Styly pro každou položku (track) v sekci s posledními skladbami */
+.track {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  min-height: 350px; /* Minimální výška každého boxu */
+}
+
+.track h3 {
+  margin: 0;
+  word-wrap: break-word;
+}
+
+/* Styly pro tlačítko 'Add to Cart' v každé položce (track) */
+.track button, .sample button, .item button {
+  margin-top: auto;
+}
+
+/* Styly pro shopping cart */
+.shopping-cart {
+  max-width: 16px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.shopping-cart h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#cart-items {
+  list-style-type: none;
+  padding: 0;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.cart-item img {
+  margin: auto;
+}
+
+/* Styly pro zobrazení počtu položek v košíku v navigačním menu */
+
+
+.cart-icon {
+	display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  margin: 10px;
+  position: relative;
+}
+.cart-icon img {
+  width: 35px;
+  height: 35px;
+  margin: auto;
+}
+
+#cart-count {
+  position: absolute;
+  background-color: red;
+  top: 50%;
+  left: 5%;
+  transform: (-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shopping-cart {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #262626;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.75);
+}
+
+.shopping-cart table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.shopping-cart th, .shopping-cart td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #555;
+}
+
+.shopping-cart th {
+  background-color: #1db954;
+  color: #fff;
+}
+
+.shopping-cart tbody tr:nth-child(even) {
+  background-color: #333;
+}
+
+.shopping-cart h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.shopping-cart a.btn {
+  display: block;
+  width: 200px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #1db954;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.shopping-cart a.btn:hover {
+  background-color: #0f813f;
+}
+
+/* Responsivní úpravy */
+@media (max-width: 768px) {
+  .shopping-cart table {
+      font-size: 14px;
+  }
+
+  .shopping-cart h2 {
+      font-size: 20px;
+  }
+
+  .shopping-cart a.btn {
+      width: 100%;
+  }
+}
+
+/* Styling pro formulář platební brány */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.row {
+  width: 100%;
+}
+
+.col-lg-6 {
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+  background-color: #262626;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.payment-form {
+  width: 100%;
+}
+
+.payment-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-control {
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#card-element {
+  margin-top: 10px;
+}
+
+#card-errors {
+  color: #dc3545;
+  margin-top: 10px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.btn-block {
+  display: block;
+}
+
+#submit-button {
+  margin-top: 20px;
+}
+

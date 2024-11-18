@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="hudba, skladba, stopa, cena, bpm, supreme, beatport">
+    <meta name="author" content="hehe">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+    <link rel="shortcut icon" href="/static/image/prdk.png" />
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <title>Platba</title>
+</head>
+<body>
+    <h1>Welcome to our Stripe Payment Page</h1>
+    <p>Click <a href="https://buy.stripe.com/test_eVabIKgKm4ht8ZqaEE" target="_blank">here</a> to make a payment.</p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Fetch client secret from backend
+            const response = await fetch("/process_payment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
+            });
+            const data = await response.json();
+            const clientSecret = data.clientSecret;
+
+            // Set the client secret in the hidden input field
+            document.getElementById("clientSecret").value = clientSecret;
+
+            const stripe = Stripe('pk_test_51PaxFWRtUc623uMcrc4vwofOAcDxK1tUTkbFyscKTfW5Ry4Io9tMqEzV1jNR0Rjlc1mMTsK1DIBoDNSgHHXj2fRf00C8Rs9Tqo'); // Nahraďte svým veřejným klíčem Stripe
+            const elements = stripe.elements();
+
+            const style = {
+                base: {
+                    color: '#32325d',
+                    fontFamily: 'Arial, sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                        color: '#aab7c4'
+                    }
+                },
+                invalid: {
+                    color: '#dc3545',
+                    iconColor: '#dc3545'
+                }
+            };
+
+            const card = elements.create('card', { style: style });
+            card.mount('#card-element');
+
+            card.on('change', function(event) {
+                const displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+
+            const form = document.getElementById('payment-form');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+
+                const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: card,
+                        billing_details: {
+                            name: name,
+                            email: email
+                        }
+                    }
+                });
+
+                if (error) {
+                    const errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = error.message;
+                } else if (paymentIntent.status === 'succeeded') {
+                    // Přesměrování na stránku úspěchu po úspěšné platbě
+                    window.location.href = '/success';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

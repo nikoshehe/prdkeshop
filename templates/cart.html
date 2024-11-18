@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="music, song, track, price, bpm, supreme, bpm supreme, beatport">
+    <meta name="author" content="hehe">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+    <link rel="shortcut icon" href="/static/image/prdk.png" />
+    <script src="https://js.stripe.com/v3/"></script>
+    <title>Nákupní košík</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/"><img src="/static/image/prdk.png" alt="PRDK Logo"></a>
+        </div>
+        <div class="navigation">
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/merch">Merch</a></li>
+                    <li><a href="/other">DUB Packs</a></li>
+                    <li><a href="https://www.patreon.com/prdkmusic" target="_blank" rel="noopener noreferrer">Patreon</a></li>
+                    <li class="cart-icon">
+                        <a href="/cart"><img src="{{ url_for('static', filename='image/cart.png') }}" alt="košík"></a>
+                        <span id="cart-count">0</span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="shopping-cart">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produkt</th>
+                        <th>Množství</th>
+                        <th>Cena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dub in cart_items %}
+                    <tr>
+                        <td>
+                            <img src="/static/image/dub.jpg" alt="{{ dub.title }}" style="width: 30px; height: 30px;">
+                            {{ dub.title }}
+                        </td>
+                        <td>
+                            <input type="number" value="{{ dub.quantity }}" min="1" onchange="updateQuantity('{{ dub.id }}', this.value)">
+                            <form onsubmit="removeFromCart('{{ dub.id }}'); return false;">
+                                <button onclick="removeFromCart('{{ dub.id }}')">Odebrat</button>
+                            </form>
+                        </td>
+                        <td>{{ dub.price * dub.quantity }} Kč</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h2>Celková cena: {{ total_price }} Kč</h2>
+            <form action="/checkout" method="POST">
+                <button type="submit"><a href="https://buy.stripe.com/test_dR69ACeCe4htgrS5kl">Přejít k platbě</a></button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer">Created by &copy; hehe</div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function updateQuantity(itemId, quantity) {
+            $.ajax({
+                type: 'POST',
+                url: '/update_quantity',
+                contentType: 'application/json',
+                data: JSON.stringify({ itemId: itemId, quantity: quantity }),
+                success: function(response) {
+                    if (response.success) {
+                        updateCartCount();
+                        location.reload();
+                    } else {
+                        alert('Nepodařilo se aktualizovat množství položky.');
+                    }
+                },
+                error: function() {
+                    alert('Chyba při aktualizaci množství položky.');
+                }
+            });
+        }
+
+        function removeFromCart(itemId) {
+            $.ajax({
+                type: 'POST',
+                url: '/remove_from_cart',
+                data: { itemId: itemId },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                        updateCartCount();
+                    } else {
+                        alert('Nepodařilo se odebrat položku z košíku.');
+                    }
+                },
+                error: function() {
+                    alert('Chyba při odebírání položky z košíku.');
+                }
+            });
+        }
+
+        function updateCartCount() {
+            $.ajax({
+                type: 'GET',
+                url: '/get_cart_count',
+                success: function(response) {
+                    $('#cart-count').text(response.count);
+                },
+                error: function() {
+                    alert('Chyba při aktualizaci počtu položek v košíku.');
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            updateCartCount();
+
+            $('#checkout-btn').click(function() {
+                window.location.href = '/checkout';
+            });
+        });
+    </script>
+</body>
+</html>
